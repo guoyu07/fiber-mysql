@@ -1,17 +1,9 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use Amp\Loop;
 use Fiber\Helper as f;
 
-Loop::run(function () {
-    $f = new Fiber(function () { mysql(); });
-
-    f\run($f);
-});
-
-function mysql()
-{
+f\once(function () {
     $config = new \Fiber\Mysql\Config();
     $config->user = 'root';
     $config->pass = 'hjkl';
@@ -22,4 +14,4 @@ function mysql()
     $db = new \Fiber\Mysql\Connection($config);
 
     echo $db->query("select * from books order by id desc limit 3");
-}
+});
